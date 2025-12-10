@@ -1,0 +1,20 @@
+[project]
+name = "sim-cycle-detection"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Augustin Marks de Chabris", email = "augustinlmdc@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "numpy",
+    "pandas",
+    "torch",
+    "simpy",
+    "fastapi (>=0.124.2,<0.125.0)",
+]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
