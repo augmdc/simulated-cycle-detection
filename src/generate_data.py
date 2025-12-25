@@ -24,6 +24,8 @@ ACTIVITY_CONFIG = {
     'Dump':    (20, 0.1),   # Fairly consistent
 }
 
+CYCLE_SPEED_FACTOR = 1.0  # 0.5 = twice as fast, 2.0 = twice as slow
+
 # PHYSICS CONSTANTS
 MAX_SPEED_TRANSIT = 12 #km/h
 MAX_SPEED_HAUL = 8 # km/h
@@ -47,14 +49,15 @@ class LHD:
 
     def cycle(self):
         def randomize_activity_time(activity_time, variance=0.1):
-            return random.gauss(activity_time, activity_time * variance) # Not thread safe?
+            base = random.gauss(activity_time, activity_time * variance)
+            return base * CYCLE_SPEED_FACTOR
 
         while True:
             # TRANSIT
             self.state = "Transit"
             self.speed = MAX_SPEED_TRANSIT
             self.grade = -13.0 # -13% going downhill
-            transit_time = randomize_activity_time(ACTIVITY_CONFIG["Transit"][0], ACTIVITY_CONFIG["Transit"][0])
+            transit_time = randomize_activity_time(ACTIVITY_CONFIG["Transit"][0], ACTIVITY_CONFIG["Transit"][1])
             yield self.env.timeout(transit_time)
 
             # TO-DO: have grade change while evening out at bottom of the hill
@@ -81,6 +84,7 @@ class LHD:
             yield self.env.timeout(haul_time)
 
             # TO-DO: have grade change while cresting the hill
+            
 
             # Dump
             # TO-DO: Speed zigzags up and down
